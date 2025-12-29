@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning Course_Alfito</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #0a0a0a;
+            --secondary-dark: #1a1a1a;
+            --accent-gray: #2a2a2a;
+            --light-gray: #9ca3af;
+            --border-gray: #374151;
+            --text-white: #f9fafb;
+            --accent-blue: #5a1874;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary-dark);
+            color: var(--text-white);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--secondary-dark) 0%, var(--primary-dark) 100%);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-gray);
+            backdrop-filter: blur(10px);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: "🤖";
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-white);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, var(--light-gray) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--light-gray);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--accent-blue);
+        }
+
+        /* Course Grid */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .course-card {
+            background: var(--secondary-dark);
+            border: 1px solid var(--border-gray);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            cursor: pointer;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+            border-color: var(--accent-blue);
+        }
+
+        .course-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .course-number {
+            background: var(--accent-blue);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .course-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-card p {
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .topics-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .topics-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--accent-gray);
+            color: var(--light-gray);
+            font-size: 0.9rem;
+        }
+
+        .topics-list li:last-child {
+            border-bottom: none;
+        }
+
+        .topics-list li::before {
+            content: "▸ ";
+            color: var(--accent-blue);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: var(--secondary-dark);
+            border: 1px solid var(--border-gray);
+            border-radius: 16px;
+            max-width: 800px;
+            width: 100%;
+            padding: 3rem;
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 2rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--light-gray);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: var(--text-white);
+        }
+
+        .modal-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-white);
+        }
+
+        .modal-content .subtitle {
+            color: var(--light-gray);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .content-section {
+            margin-bottom: 2rem;
+        }
+
+        .content-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--accent-blue);
+        }
+
+        .content-section p {
+            color: var(--light-gray);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .content-section ul {
+            list-style: none;
+            margin-left: 1rem;
+        }
+
+        .content-section ul li {
+            padding: 0.5rem 0;
+            color: var(--light-gray);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .content-section ul li::before {
+            content: "●";
+            color: var(--accent-blue);
+            position: absolute;
+            left: 0;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-dark);
+            border-top: 1px solid var(--border-gray);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            color: var(--light-gray);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--secondary-dark);
+                flex-direction: column;
+                padding: 1rem 2rem;
+                border-bottom: 1px solid var(--border-gray);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 2rem;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo">ML Course</a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Beranda</a></li>
+                <li><a href="#materi">Materi</a></li>
+                <li><a href="#about">Tentang</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <h1>Machine Learning</h1>
+        <p>Pelajari konsep fundamental hingga aplikasi praktis Machine Learning dalam perkuliahan yang terstruktur dan komprehensif</p>
+    </section>
+
+    <main id="materi">
+        <h2 class="section-title">Daftar Materi Perkuliahan</h2>
+        
+        <div class="course-grid" id="courseGrid"></div>
+    </main>
+
+    <section id="about" style="max-width: 1200px; margin: 4rem auto; padding: 0 2rem;">
+        <h2 class="section-title">Tentang Mata Kuliah</h2>
+        <div style="background: var(--secondary-dark); border: 1px solid var(--border-gray); border-radius: 12px; padding: 2rem; text-align: center;">
+            <p style="color: var(--light-gray); max-width: 800px; margin: 0 auto; line-height: 1.8;">
+                Mata kuliah Machine Learning dirancang untuk memberikan pemahaman mendalam tentang algoritma dan teknik pembelajaran mesin. 
+                Mahasiswa akan mempelajari teori, implementasi, dan aplikasi praktis dari berbagai metode machine learning untuk menyelesaikan 
+                masalah dunia nyata.
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Machine Learning Course. All rights reserved.</p>
+    </footer>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2 id="modalTitle"></h2>
+                    <p class="subtitle" id="modalSubtitle"></p>
+                </div>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const courses = [
+            {
+                pertemuan: 1,
+                judul: "Pengenalan Machine Learning",
+                deskripsi: "Memahami konsep dasar dan ruang lingkup machine learning",
+                topik: ["Definisi Machine Learning", "Perbedaan AI, ML, dan Deep Learning", "Jenis-jenis Machine Learning", "Aplikasi dalam Industri"],
+                konten: {
+                    tujuan: "Mahasiswa mampu memahami konsep dasar machine learning dan membedakan antara berbagai jenis pembelajaran mesin.",
+                    materi: [
+                        "Definisi dan sejarah Machine Learning",
+                        "Supervised Learning vs Unsupervised Learning",
+                        "Reinforcement Learning",
+                        "Contoh aplikasi ML di berbagai industri"
+                    ],
+                    referensi: "Andrew Ng - Machine Learning Course, Coursera"
+                }
+            },
+            {
+                pertemuan: 2,
+                judul: "Python untuk Machine Learning",
+                deskripsi: "Dasar pemrograman Python dan library penting untuk ML",
+                topik: ["NumPy & Pandas", "Matplotlib & Seaborn", "Data Manipulation", "Visualisasi Data"],
+                konten: {
+                    tujuan: "Mahasiswa mampu menggunakan Python dan library-nya untuk pengolahan dan visualisasi data.",
+                    materi: [
+                        "Pengenalan NumPy untuk operasi array",
+                        "Pandas untuk manipulasi data",
+                        "Matplotlib dan Seaborn untuk visualisasi",
+                        "Praktik: Loading dan eksplorasi dataset"
+                    ],
+                    referensi: "Python Data Science Handbook - Jake VanderPlas"
+                }
+            },
+            {
+                pertemuan: 3,
+                judul: "Preprocessing Data",
+                deskripsi: "Teknik pembersihan dan persiapan data untuk modeling",
+                topik: ["Handling Missing Values", "Feature Scaling", "Encoding Categorical Data", "Train-Test Split"],
+                konten: {
+                    tujuan: "Mahasiswa mampu melakukan preprocessing data untuk mempersiapkan dataset sebelum modeling.",
+                    materi: [
+                        "Mengatasi missing values (imputation)",
+                        "Normalisasi dan standardisasi data",
+                        "One-hot encoding dan label encoding",
+                        "Pembagian data training dan testing"
+                    ],
+                    referensi: "Scikit-learn Documentation - Preprocessing"
+                }
+            },
+            {
+                pertemuan: 4,
+                judul: "Linear Regression",
+                deskripsi: "Algoritma dasar untuk prediksi nilai kontinu",
+                topik: ["Simple Linear Regression", "Multiple Linear Regression", "Cost Function", "Gradient Descent"],
+                konten: {
+                    tujuan: "Mahasiswa mampu memahami dan mengimplementasikan algoritma linear regression.",
+                    materi: [
+                        "Konsep regresi linier sederhana dan berganda",
+                        "Fungsi biaya (MSE, RMSE, MAE)",
+                        "Optimisasi dengan gradient descent",
+                        "Evaluasi model regresi (R², adjusted R²)"
+                    ],
+                    referensi: "Introduction to Statistical Learning - James et al."
+                }
+            },
+            {
+                pertemuan: 5,
+                judul: "Logistic Regression",
+                deskripsi: "Algoritma klasifikasi biner menggunakan fungsi sigmoid",
+                topik: ["Binary Classification", "Sigmoid Function", "Decision Boundary", "Confusion Matrix"],
+                konten: {
+                    tujuan: "Mahasiswa mampu menggunakan logistic regression untuk masalah klasifikasi.",
+                    materi: [
+                        "Perbedaan regresi linier dan logistik",
+                        "Fungsi sigmoid dan probabilitas",
+                        "Decision boundary dan threshold",
+                        "Evaluasi: Accuracy, Precision, Recall, F1-Score"
+                    ],
+                    referensi: "Pattern Recognition and Machine Learning - Bishop"
+                }
+            },
+            {
+                pertemuan: 6,
+                judul: "Decision Tree",
+                deskripsi: "Model berbasis pohon keputusan untuk klasifikasi dan regresi",
+                topik: ["Tree Structure", "Gini Index", "Information Gain", "Pruning"],
+                konten: {
+                    tujuan: "Mahasiswa mampu memahami cara kerja decision tree dan menggunakannya untuk prediksi.",
+                    materi: [
+                        "Struktur pohon keputusan",
+                        "Algoritma ID3, C4.5, dan CART",
+                        "Gini impurity dan entropy",
+                        "Overfitting dan pruning"
+                    ],
+                    referensi: "The Elements of Statistical Learning - Hastie et al."
+                }
+            },
+            {
+                pertemuan: 7,
+                judul: "Random Forest",
+                deskripsi: "Ensemble learning dengan multiple decision trees",
+                topik: ["Ensemble Methods", "Bagging", "Feature Importance", "Out-of-Bag Error"],
+                konten: {
+                    tujuan: "Mahasiswa mampu mengimplementasikan random forest untuk meningkatkan performa model.",
+                    materi: [
+                        "Konsep ensemble learning",
+                        "Bootstrap aggregating (bagging)",
+                        "Random feature selection",
+                        "Interpretasi feature importance"
+                    ],
+                    referensi: "Breiman, L. - Random Forests (2001)"
+                }
+            },
+            {
+                pertemuan: 8,
+                judul: "Support Vector Machine (SVM)",
+                deskripsi: "Algoritma klasifikasi dengan maximum margin hyperplane",
+                topik: ["Hyperplane", "Support Vectors", "Kernel Trick", "C Parameter"],
+                konten: {
+                    tujuan: "Mahasiswa mampu memahami konsep SVM dan menggunakannya untuk klasifikasi data kompleks.",
+                    materi: [
+                        "Linear SVM dan margin maksimum",
+                        "Support vectors dan hyperplane",
+                        "Kernel functions (linear, polynomial, RBF)",
+                        "Parameter tuning (C dan gamma)"
+                    ],
+                    referensi: "A Tutorial on Support Vector Machines - Burges"
+                }
+            },
+            {
+                pertemuan: 9,
+                judul: "K-Nearest Neighbors (KNN)",
+                deskripsi: "Algoritma klasifikasi berbasis kedekatan data",
+                topik: ["Distance Metrics", "K Value Selection", "Weighted KNN", "Curse of Dimensionality"],
+                konten: {
+                    tujuan: "Mahasiswa mampu mengimplementasikan KNN dan memahami pengaruh parameter K.",
+                    materi: [
+                        "Konsep instance-based learning",
+                        "Euclidean, Manhattan, dan Minkowski distance",
+                        "Pemilihan nilai K optimal",
+                        "Kelebihan dan keterbatasan KNN"
+                    ],
+                    referensi: "Pattern Classification - Duda, Hart, Stork"
+                }
+            },
+            {
+                pertemuan: 10,
+                judul: "Naive Bayes",
+                deskripsi: "Algoritma probabilistik berdasarkan teorema Bayes",
+                topik: ["Bayes Theorem", "Conditional Probability", "Gaussian Naive Bayes", "Text Classification"],
+                konten: {
+                    tujuan: "Mahasiswa mampu memahami dan menerapkan naive bayes untuk klasifikasi.",
+                    materi: [
+                        "Teorema Bayes dan probabilitas bersyarat",
+                        "Asumsi independence pada naive bayes",
+                        "Gaussian, Multinomial, dan Bernoulli NB",
+                        "Aplikasi: spam detection dan sentiment analysis"
+                    ],
+                    referensi: "Machine Learning: A Probabilistic Perspective - Murphy"
+                }
+            },
+            {
+                pertemuan: 11,
+                judul: "K-Means Clustering",
+                deskripsi: "Algoritma unsupervised learning untuk pengelompokan data",
+                topik: ["Centroid", "Elbow Method", "Silhouette Score", "Cluster Validation"],
+                konten: {
+                    tujuan: "Mahasiswa mampu melakukan clustering data menggunakan K-Means.",
+                    materi: [
+                        "Konsep clustering dan unsupervised learning",
+                        "Algoritma K-Means dan iterasi centroid",
+                        "Menentukan jumlah cluster optimal",
+                        "Evaluasi clustering (silhouette, Davies-Bouldin)"
+                    ],
+                    referensi: "Data Mining: Concepts and Techniques - Han, Kamber"
+                }
+            },
+            {
+                pertemuan: 12,
+                judul: "Principal Component Analysis (PCA)",
+                deskripsi: "Teknik dimensionality reduction untuk data berfitur tinggi",
+                topik: ["Dimensionality Reduction", "Eigenvalues", "Eigenvectors", "Variance Explained"],
+                konten: {
+                    tujuan: "Mahasiswa mampu menerapkan PCA untuk mengurangi dimensi data.",
+                    materi: [
+                        "Masalah curse of dimensionality",
+                        "Eigenvalues dan eigenvectors",
+                        "Proyeksi data ke principal components",
+                        "Visualisasi data high-dimensional"
+                    ],
+                    referensi: "Pattern Recognition and Machine Learning - Bishop"
+                }
+            },
+            {
+                pertemuan: 13,
+                judul: "Neural Networks Basics",
+                deskripsi: "Pengenalan jaringan saraf tiruan dan deep learning",
+                topik: ["Perceptron", "Activation Functions", "Backpropagation", "Forward Pass"],
+                konten: {
+                    tujuan: "Mahasiswa mampu memahami arsitektur dasar neural networks.",
+                    materi: [
+                        "Struktur neuron dan layer",
+                        "Activation functions (sigmoid, ReLU, tanh)",
+                        "Forward propagation dan backpropagation",
+                        "Training neural networks"
+                    ],
+                    referensi: "Deep Learning - Goodfellow, Bengio, Courville"
+                }
+            },
+            {
+                pertemuan: 14,
+                judul: "Model Evaluation & Validation",
+                deskripsi: "Teknik evaluasi dan validasi performa model ML",
+                topik: ["Cross-Validation", "Overfitting vs Underfitting", "Bias-Variance Tradeoff", "Regularization"],
+                konten: {
+                    tujuan: "Mahasiswa mampu melakukan evaluasi model dan mengatasi overfitting.",
+                    materi: [
+                        "K-fold cross-validation",
+                        "Learning curves dan validation curves",
+                        "Bias-variance tradeoff",
+                        "Teknik regularization (L1, L2, Elastic Net)"
+                    ],
+                    referensi: "Machine Learning Yearning - Andrew Ng"
+                }
+            }
+        ];
+
+        function renderCourses() {
+            const grid = document.getElementById('courseGrid');
+            grid.innerHTML = courses.map((course, index) => `
+                <div class="course-card fade-in" style="animation-delay: ${index * 0.1}s" onclick="openCourseModal(${course.pertemuan})">
+                    <div class="course-header">
+                        <div class="course-number">${course.pertemuan}</div>
+                        <div>
+                            <h3>${course.judul}</h3>
+                        </div>
+                    </div>
+                    <p>${course.deskripsi}</p>
+                    <ul class="topics-list">
+                        ${course.topik.map(t => `<li>${t}</li>`).join('')}
+                    </ul>
+                </div>
+            `).join('');
+        }
+
+        function openCourseModal(pertemuan) {
+            const course = courses.find(c => c.pertemuan === pertemuan);
+            document.getElementById('modalTitle').textContent = `Pertemuan ${course.pertemuan}: ${course.judul}`;
+            document.getElementById('modalSubtitle').textContent = course.deskripsi;
+            
+            document.getElementById('modalBody').innerHTML = `
+                <div class="content-section">
+                    <h3>Tujuan Pembelajaran</h3>
+                    <p>${course.konten.tujuan}</p>
+                </div>
+                <div class="content-section">
+                    <h3>Materi yang Dipelajari</h3>
+                    <ul>
+                        ${course.konten.materi.map(m => `<li>${m}</li>`).join('')}
+                    </ul>
+                </div>
+                <div class="content-section">
+                    <h3>Referensi</h3>
+                    <p>${course.konten.referensi}</p>
+                </div>
+            `;
+            
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', renderCourses);
+
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+</body>
+</html>
